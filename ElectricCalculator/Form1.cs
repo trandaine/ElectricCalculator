@@ -45,6 +45,29 @@ namespace ElectricCalculator
             }
             return price;
         }
+
+        private double CalculateElectricPrice_v3(int indexElectricity)
+        {
+            double price = 0;
+            const int arrayLength = 6;
+            int[] arrayIndex = new int[arrayLength] { 0, 51, 101, 201, 301, 401 };
+            int[] arrayPrice = new int[arrayLength] { 1806, 1866, 2167, 2729, 3050, 3151 };
+            for (int i = arrayLength - 1; i >= 0; i--   )
+            {
+                
+                if (indexElectricity > arrayIndex[i])
+                {
+                    int subIndex = indexElectricity - arrayIndex[i];
+                    // price = price + subIndex * arrayPrice[i];
+                    price += subIndex * arrayPrice[i];
+                }
+                else
+                {
+                    price += arrayIndex[i] * arrayPrice[i];
+                }
+            }
+            return price;
+        }
         private float calculateElectricPrice(float index)
         {
             float total = 0;
