@@ -54,17 +54,14 @@ namespace ElectricCalculator
             int[] arrayPrice = new int[arrayLength] { 1806, 1866, 2167, 2729, 3050, 3151 };
             for (int i = arrayLength - 1; i >= 0; i--   )
             {
-                
-                if (indexElectricity > arrayIndex[i])
+                int subIndex = indexElectricity - arrayIndex[i];
+
+                if (subIndex<0)
                 {
-                    int subIndex = indexElectricity - arrayIndex[i];
-                    // price = price + subIndex * arrayPrice[i];
-                    price += subIndex * arrayPrice[i];
+                    continue;
                 }
-                else
-                {
-                    price += arrayIndex[i] * arrayPrice[i];
-                }
+                price += subIndex * arrayPrice[i];
+                indexElectricity = arrayIndex[i];
             }
             return price;
         }
@@ -154,20 +151,31 @@ namespace ElectricCalculator
 
         private void btnSubmit_Click(object sender, EventArgs e)
         {
-            float total = this.calculateElectricPrice_v2(float.Parse(txtBoxCurrentIndex.Text) - float.Parse(txtboxLastIndex.Text));
-            lblStatusSMS.Text = "Success";
-            lblStatusSMS.ForeColor = Color.Green;
-            ListViewItem items = new ListViewItem(new string[]
+            // Check the input of the currentindex and lastindex is greater than 0, if not show the error message and quit the function
+            if (int.Parse(txtBoxCurrentIndex.Text) <= 0)
             {
+                lblStatusSMS.Text = "Invalid Index (Your current index must not lower than 0)";
+                lblStatusSMS.ForeColor = Color.Red;
+                return;
+            }
+            else
+            {
+                float total = this.calculateElectricPrice_v2(float.Parse(txtBoxCurrentIndex.Text) - float.Parse(txtboxLastIndex.Text));
+                lblStatusSMS.Text = "Success";
+                lblStatusSMS.ForeColor = Color.Green;
+                ListViewItem items = new ListViewItem(new string[]
+                {
                 this.tbCustomerID.Text,
                 this.tbCustomerName.Text,
                 this.txtboxLastIndex.Text,
                 this.txtBoxCurrentIndex.Text,
                 $"{total: #,###}VND",
-            });
-            this.lsvResult.Items.Add(items);
-            this.lsvResult.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-            this.lsvResult.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+                });
+                this.lsvResult.Items.Add(items);
+                this.lsvResult.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+                this.lsvResult.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+            }
+            
 
         }
 
@@ -195,6 +203,31 @@ namespace ElectricCalculator
             {
                 lblFinalCost.Text = $"{int.Parse(txtBoxCurrentIndex.Text) - int.Parse(txtboxLastIndex.Text)}";
             }
+        }
+
+        private bool ResetElectricFormError()
+        {
+            lblIDErrSms.Text = string.Empty;
+            lblNameErrSMS.Text = string.Empty;
+            lblLastIndexErrSMS.Text = string.Empty;
+            lblCurrentIndexErrSms.Text = string.Empty;
+            lblStatusSMS.Text = string.Empty;
+            return true;
+        }
+
+        private void btnReset_Click()
+        {
+            tbCustomerID.Text = string.Empty;
+            tbCustomerName.Text = string.Empty;
+            txtboxLastIndex.Text = string.Empty;
+            txtBoxCurrentIndex.Text = string.Empty;
+            lblFinalCost.Text = string.Empty;
+            ResetElectricFormError();
+        }
+
+        private void GenerateErrMessage()
+        {
+
         }
     }   
 }
