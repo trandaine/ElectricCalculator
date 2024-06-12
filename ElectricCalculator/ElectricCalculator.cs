@@ -22,8 +22,15 @@ namespace ElectricCalculator
             lsvResult.Columns.Add("Customer Name", 100);
             lsvResult.Columns.Add("Last Index", 100);
             lsvResult.Columns.Add("Current Index", 100);
+            lsvResult.Columns.Add("Tax", 100);
             lsvResult.Columns.Add("Total Cost", 100);
         }
+
+        /// <summary>
+        /// Calculate the electric price based on the consumption index with algorithm strategy
+        /// </summary>
+        /// <param name="consumptionIndex">The consumtion index that customer has used in the month</param>
+        /// <returns>Return the price in float numbers</returns>
         private float calculateElectricPrice_v2(float consumptionIndex)
         {
             float price = 0;
@@ -46,6 +53,7 @@ namespace ElectricCalculator
             return price;
         }
 
+       
         private double CalculateElectricPrice_v3(int indexElectricity)
         {
             double price = 0;
@@ -65,6 +73,12 @@ namespace ElectricCalculator
             }
             return price;
         }
+
+        /// <summary>
+        /// Calculate the electric price based on the consumption index with if else strategy
+        /// </summary>
+        /// <param name="index">The consumer index that customer has used in the month</param>
+        /// <returns>Return the price in float numbers</returns>
         private float calculateElectricPrice(float index)
         {
             float total = 0;
@@ -93,7 +107,7 @@ namespace ElectricCalculator
                     + (index - 200) 
                     * Pricelevel4_From201to300;
             }
-            else if (index >= 301 && index <= 400)
+            else if (index >= 301 && index <= 400)          // 301 - 400
             {
                 total = (50 * Pricelevel1_From0to50) 
                     + (50 * Pricelevel2_From51to100) 
@@ -102,7 +116,7 @@ namespace ElectricCalculator
                     + (index - 300) 
                     * Pricelevel5_From301to400;
             }
-            else if (index >= 401)
+            else if (index >= 401)                      // 401 to infinite
             {
                 total = (50 * Pricelevel1_From0to50) 
                     + (50 * Pricelevel2_From51to100) 
@@ -117,8 +131,6 @@ namespace ElectricCalculator
         
         private void tbCustomerID_TextChanged(object sender, EventArgs e)
         {
-            //Regex idRegex = new Regex(idPattern);
-            //lblIDErrSms.Text = string.Empty;
             ////try {
             ////    var input = tbCustomerID.Text;
             ////    if(string.IsNullOrEmpty(input)) lblIDErrSms.Text = "Nho71 nha6p5 nha chan noi";
@@ -131,11 +143,6 @@ namespace ElectricCalculator
             ////} 
             ////catch (Exception ex)
             ////{ }
-            //if (!idRegex.IsMatch(tbCustomerID.Text))
-            //{
-            //    lblIDErrSms.Text = "Invalid ID";
-            //    lblIDErrSms.ForeColor = Color.Red;
-            //}
             for(int i = 0; i < tbCustomerID.Text.Length; i++)
             {
                 checkAlphabeticalwithIDValue("Invalid ID", lblIDErrSms, tbCustomerID);
@@ -144,13 +151,6 @@ namespace ElectricCalculator
 
         private void tbCustomerName_TextChanged(object sender, EventArgs e)
         {
-            //Regex nameRegex = new Regex(namePattern);
-            //lblNameErrSMS.Text = string.Empty;
-            //if (!nameRegex.IsMatch(tbCustomerName.Text))
-            //{
-            //    lblNameErrSMS.Text = "Invalid Name";
-            //    lblNameErrSMS.ForeColor = Color.Red;
-            //}
             for(int i = 0; i < tbCustomerName.Text.Length; i++)
             {
                 checkAlphabeticalValue("Invalid Name", lblNameErrSMS, tbCustomerName);
@@ -160,15 +160,18 @@ namespace ElectricCalculator
         private void btnSubmit_Click(object sender, EventArgs e)
         {
             // Check the input of the currentindex and lastindex is greater than 0, if not show the error message and quit the function
-            if (int.Parse(txtBoxCurrentIndex.Text) <= 0)
+            if (int.Parse(txtBoxCurrentIndex.Text) <= 0 || int.Parse(txtboxLastIndex.Text) <= 0)
             {
-                lblStatusSMS.Text = "Invalid Index (Your current index must not lower than 0)";
+                lblStatusSMS.Text = "Invalid Index (Your last and current index must not lower than 0)";
                 lblStatusSMS.ForeColor = Color.Red;
                 return;
             }
             else
             {
                 float total = this.calculateElectricPrice_v2(float.Parse(txtBoxCurrentIndex.Text) - float.Parse(txtboxLastIndex.Text));
+                // Calculate the tax of the total cost (8%)
+                total += total * 0.08F;
+                float totalWithTax = total * 0.08F;
                 lblStatusSMS.Text = "Success";
                 lblStatusSMS.ForeColor = Color.Green;
                 ListViewItem items = new ListViewItem(new string[]
@@ -177,6 +180,7 @@ namespace ElectricCalculator
                 this.tbCustomerName.Text,
                 this.txtboxLastIndex.Text,
                 this.txtBoxCurrentIndex.Text,
+                $"{totalWithTax: #,###}VND",
                 $"{total: #,###}VND",
                 });
                 this.lsvResult.Items.Add(items);
@@ -198,17 +202,6 @@ namespace ElectricCalculator
 
         private void txtBoxCurrentIndex_TextChanged(object sender, EventArgs e)
         {
-            //Regex lstCurrentIndexRegex = new Regex(numberPattern);
-            //lblCurrentIndexErrSms.Text = string.Empty;
-            //if (!lstCurrentIndexRegex.IsMatch(txtBoxCurrentIndex.Text))
-            //{
-            //    lblCurrentIndexErrSms.Text = "Invalid Number";
-            //    lblCurrentIndexErrSms.ForeColor = Color.Red;
-            //}
-            //else
-            //{
-            //    lblFinalCost.Text = $"{int.Parse(txtBoxCurrentIndex.Text) - int.Parse(txtboxLastIndex.Text)}";
-            //}
 
             for(int i = 0; i < txtBoxCurrentIndex.Text.Length; i++)
             {
