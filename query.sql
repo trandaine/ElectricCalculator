@@ -1,3 +1,4 @@
+CREATE DATABASE ElectricCalculator;
 USE ElectricCalculator;
 CREATE TABLE Customers(
     ID char(12) NOT NULL PRIMARY KEY,
@@ -7,14 +8,14 @@ CREATE TABLE Customers(
 );
 
 CREATE TABLE CustomerInfo(
-    Id CHAR(36) not NULL PRIMARY KEY,
+    Id CHAR(36) NOT NULL PRIMARY KEY,
     CustomerID CHAR(12) NOT NULL FOREIGN key REFERENCES Customers(Id),
     Address VARCHAR(255),
     Phone VARCHAR(20),
     Email VARCHAR(255)
 )
 
-Create table ElectricPrice(
+CREATE TABLE ElectricPrice(
 Id TINYINT NOT NULL PRIMARY KEY,
 Range TINYINT NOT NULL,
 Price FLOAT(10) NOT NULL
@@ -30,4 +31,13 @@ CREATE TABLE CustomerIndies(
     DateCreated DATE NOT NULL,
     Month TINYINT,
     Year TINYINT
-)
+);
+
+CREATE TABLE EmployeeID(
+    Id CHAR(12) NOT NULL PRIMARY KEY,
+    Name CHAR(75)
+);
+
+ALTER TABLE CustomerIndies add FOREIGN KEY (EmployeeID) REFERENCES Employee (Id);
+
+

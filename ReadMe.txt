@@ -2,6 +2,7 @@ github.com/trandaine/ElectricCalculator
 Git log:
 
 7/Jun: 12h23
+switch to enhance branch - git checkout enhance
 Rename file name from Form1 to ElectricCalculator
 Enhance the btnSubmit_Click function to add the err mss to user
 
