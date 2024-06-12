@@ -170,8 +170,8 @@ namespace ElectricCalculator
             {
                 float total = this.calculateElectricPrice_v2(float.Parse(txtBoxCurrentIndex.Text) - float.Parse(txtboxLastIndex.Text));
                 // Calculate the tax of the total cost (8%)
-                total += total * 0.08F;
-                float totalWithTax = total * 0.08F;
+                total += total * 0.08F; // 
+                float totalWithTax = total * 0.08F;         // Show the tax price (8% of total cost)
                 lblStatusSMS.Text = "Success";
                 lblStatusSMS.ForeColor = Color.Green;
                 ListViewItem items = new ListViewItem(new string[]
