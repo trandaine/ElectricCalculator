@@ -8,6 +8,6 @@ namespace ElectricCalculator22222.Common
 {
     public static class PConstants
     {
-        public static PConstants int ID_MAX_LENGTH = 12;
+        public const int ID_MAX_LENGTH = 12;
     }
 }

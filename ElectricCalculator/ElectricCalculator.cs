@@ -117,35 +117,43 @@ namespace ElectricCalculator
         
         private void tbCustomerID_TextChanged(object sender, EventArgs e)
         {
-            Regex idRegex = new Regex(idPattern);
-            lblIDErrSms.Text = string.Empty;
-            //try {
-            //    var input = tbCustomerID.Text;
-            //    if(string.IsNullOrEmpty(input)) lblIDErrSms.Text = "Nho71 nha6p5 nha chan noi";
-            //    if (!idRegex.IsMatch(input))
-            //    {
-            //        lblIDErrSms.Text = "Invalid ID";
-            //        lblIDErrSms.ForeColor = Color.Red;
-            //    }
+            //Regex idRegex = new Regex(idPattern);
+            //lblIDErrSms.Text = string.Empty;
+            ////try {
+            ////    var input = tbCustomerID.Text;
+            ////    if(string.IsNullOrEmpty(input)) lblIDErrSms.Text = "Nho71 nha6p5 nha chan noi";
+            ////    if (!idRegex.IsMatch(input))
+            ////    {
+            ////        lblIDErrSms.Text = "Invalid ID";
+            ////        lblIDErrSms.ForeColor = Color.Red;
+            ////    }
 
-            //} 
-            //catch (Exception ex)
-            //{ }
-            if (!idRegex.IsMatch(tbCustomerID.Text))
+            ////} 
+            ////catch (Exception ex)
+            ////{ }
+            //if (!idRegex.IsMatch(tbCustomerID.Text))
+            //{
+            //    lblIDErrSms.Text = "Invalid ID";
+            //    lblIDErrSms.ForeColor = Color.Red;
+            //}
+            for(int i = 0; i < tbCustomerID.Text.Length; i++)
             {
-                lblIDErrSms.Text = "Invalid ID";
-                lblIDErrSms.ForeColor = Color.Red;
+                checkAlphabeticalwithIDValue("Invalid ID", lblIDErrSms, tbCustomerID);
             }
         }
 
         private void tbCustomerName_TextChanged(object sender, EventArgs e)
         {
-            Regex nameRegex = new Regex(namePattern);
-            lblNameErrSMS.Text = string.Empty;
-            if (!nameRegex.IsMatch(tbCustomerName.Text))
+            //Regex nameRegex = new Regex(namePattern);
+            //lblNameErrSMS.Text = string.Empty;
+            //if (!nameRegex.IsMatch(tbCustomerName.Text))
+            //{
+            //    lblNameErrSMS.Text = "Invalid Name";
+            //    lblNameErrSMS.ForeColor = Color.Red;
+            //}
+            for(int i = 0; i < tbCustomerName.Text.Length; i++)
             {
-                lblNameErrSMS.Text = "Invalid Name";
-                lblNameErrSMS.ForeColor = Color.Red;
+                checkAlphabeticalValue("Invalid Name", lblNameErrSMS, tbCustomerName);
             }
         }
 
@@ -181,28 +189,33 @@ namespace ElectricCalculator
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            Regex lstLastIndexRegex = new Regex(numberPattern);
-            lblLastIndexErrSMS.Text = string.Empty;
-            if (!lstLastIndexRegex.IsMatch(txtboxLastIndex.Text))
-            {
-                lblLastIndexErrSMS.Text = "Invalid Number";
-                lblLastIndexErrSMS.ForeColor = Color.Red;
+            for (int i = 0; i < txtboxLastIndex.Text.Length; i++)
+            { 
+                checkNumbericalValue("Invalid Number", lblLastIndexErrSMS, txtboxLastIndex);
             }
+            
         }
 
         private void txtBoxCurrentIndex_TextChanged(object sender, EventArgs e)
         {
-            Regex lstCurrentIndexRegex = new Regex(numberPattern);
-            lblCurrentIndexErrSms.Text = string.Empty;
-            if (!lstCurrentIndexRegex.IsMatch(txtBoxCurrentIndex.Text))
+            //Regex lstCurrentIndexRegex = new Regex(numberPattern);
+            //lblCurrentIndexErrSms.Text = string.Empty;
+            //if (!lstCurrentIndexRegex.IsMatch(txtBoxCurrentIndex.Text))
+            //{
+            //    lblCurrentIndexErrSms.Text = "Invalid Number";
+            //    lblCurrentIndexErrSms.ForeColor = Color.Red;
+            //}
+            //else
+            //{
+            //    lblFinalCost.Text = $"{int.Parse(txtBoxCurrentIndex.Text) - int.Parse(txtboxLastIndex.Text)}";
+            //}
+
+            for(int i = 0; i < txtBoxCurrentIndex.Text.Length; i++)
             {
-                lblCurrentIndexErrSms.Text = "Invalid Number";
-                lblCurrentIndexErrSms.ForeColor = Color.Red;
+                checkNumbericalValue("Invalid Number", lblCurrentIndexErrSms, txtBoxCurrentIndex);
             }
-            else
-            {
-                lblFinalCost.Text = $"{int.Parse(txtBoxCurrentIndex.Text) - int.Parse(txtboxLastIndex.Text)}";
-            }
+            // Calculate the final cost
+            lblFinalCost.Text = $"{int.Parse(txtBoxCurrentIndex.Text) - int.Parse(txtboxLastIndex.Text)}";
         }
 
         private bool ResetElectricFormError()
@@ -225,8 +238,56 @@ namespace ElectricCalculator
             ResetElectricFormError();
         }
 
-        private void GenerateErrMessage()
+        /// <summary>
+        /// Check and return the error message if the input is not a number function
+        /// </summary>
+        /// <param name="msgError">The error message you want to input</param>
+        /// <param name="nameLabel">The label where you want to put the error message in</param>
+        /// <param name="txbName">The textbox where the input string you want to check</param>
+        private void checkNumbericalValue(string msgError, Label nameLabel, TextBox txbName)
         {
+            Regex numberRegex = new Regex(numberPattern);
+            nameLabel.Text = string.Empty;
+            if (!numberRegex.IsMatch(txbName.Text))
+            {
+                nameLabel.Text = msgError;
+                nameLabel.ForeColor = Color.Red;
+            }
+            
+        }
+        /// <summary>
+        /// Check and return the error message if the input is not a alphabetical function
+        /// </summary>
+        /// <param name="msgError">The error message you want to input</param>
+        /// <param name="nameLabel">The label where you want to put the error message in</param>
+        /// <param name="txbName">The textbox where the input string you want to check</param>
+        private void checkAlphabeticalValue(string msgError, Label nameLabel, TextBox txbName)
+        {
+            Regex numberRegex = new Regex(namePattern);
+            nameLabel.Text = string.Empty;
+            if (!numberRegex.IsMatch(txbName.Text))
+            {
+                nameLabel.Text = msgError;
+                nameLabel.ForeColor = Color.Red;
+            }
+
+        }
+
+        /// <summary>
+        /// Check and return the error message if the input is not a alphabetical with ID function
+        /// </summary>
+        /// <param name="msgError">The error message you want to input</param>
+        /// <param name="nameLabel">The label where you want to put the error message in</param>
+        /// <param name="txbName">The textbox where the input string you want to check</param>
+        private void checkAlphabeticalwithIDValue(string msgError, Label nameLabel, TextBox txbName)
+        {
+            Regex numberRegex = new Regex(idPattern);
+            nameLabel.Text = string.Empty;
+            if (!numberRegex.IsMatch(txbName.Text))
+            {
+                nameLabel.Text = msgError;
+                nameLabel.ForeColor = Color.Red;
+            }
 
         }
     }   

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ElectricCalculator22222.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -22,3 +23,7 @@ namespace ElectricCalculator.Models
         public virtual CustomerInfo CustomerInfo { get; set; }
     }
 }
+
+
+
+
