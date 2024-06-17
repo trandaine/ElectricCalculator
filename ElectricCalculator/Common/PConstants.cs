@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ElectricCalculator22222.Common
+namespace ElectricCalculator.Common
 {
     public static class PConstants
     {
