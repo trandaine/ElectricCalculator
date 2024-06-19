@@ -14,3 +14,7 @@ Create Function checkNumbericalValue, checkAlphabeticalValue, checkAlphabeticalw
 Modify txtboxes with the new for loop and working with the new created functions
 Fix bugs in the btnSubmit
 Continue exploring and working with databases
+
+18/Jun:
+Working with ADO.NET framework in sqlado branch
+Refactor whole projects

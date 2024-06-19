@@ -1,5 +1,3 @@
-using ElectricCalculator.Data;
-using ElectricCalculator.Models;
 using System.Data.SqlTypes;
 using System.Diagnostics;
 using System.Drawing.Text;
@@ -60,95 +58,27 @@ namespace ElectricCalculator
         }
 
 
-        private double CalculateElectricPrice_v3(int indexElectricity)
-        {
-            double price = 0;
-            const int arrayLength = 6;
-            int[] arrayIndex = new int[arrayLength] { 0, 51, 101, 201, 301, 401 };
-            int[] arrayPrice = new int[arrayLength] { 1806, 1866, 2167, 2729, 3050, 3151 };
-            for (int i = arrayLength - 1; i >= 0; i--)
-            {
-                int subIndex = indexElectricity - arrayIndex[i];
+        
 
-                if (subIndex < 0)
-                {
-                    continue;
-                }
-                price += subIndex * arrayPrice[i];
-                indexElectricity = arrayIndex[i];
-            }
-            return price;
-        }
-
-        /// <summary>
-        /// Calculate the electric price based on the consumption index with if else strategy
-        /// </summary>
-        /// <param name="index">The consumer index that customer has used in the month</param>
-        /// <returns>Return the price in float numbers</returns>
-        private float calculateElectricPrice(float index)
-        {
-            float total = 0;
-            if (index <= 50)
-            {
-                total = index * Pricelevel1_From0to50;
-            }
-            else if (index >= 51 && index <= 100)           // 51 - 100
-            {
-                total = (50 * Pricelevel1_From0to50)
-                    + (index - 50)
-                    * Pricelevel2_From51to100;
-            }
-            else if (index >= 101 && index <= 200)          // 101 - 200
-            {
-                total = (50 * Pricelevel1_From0to50)
-                    + (50 * Pricelevel2_From51to100)
-                    + (index - 100)
-                    * Pricelevel3_From101to200;
-            }
-            else if (index >= 201 && index <= 300)          // 201 - 300
-            {
-                total = (50 * Pricelevel1_From0to50)
-                    + (50 * Pricelevel2_From51to100)
-                    + (100 * Pricelevel3_From101to200)
-                    + (index - 200)
-                    * Pricelevel4_From201to300;
-            }
-            else if (index >= 301 && index <= 400)          // 301 - 400
-            {
-                total = (50 * Pricelevel1_From0to50)
-                    + (50 * Pricelevel2_From51to100)
-                    + (100 * Pricelevel3_From101to200)
-                    + (100 * Pricelevel4_From201to300)
-                    + (index - 300)
-                    * Pricelevel5_From301to400;
-            }
-            else if (index >= 401)                      // 401 to infinite
-            {
-                total = (50 * Pricelevel1_From0to50)
-                    + (50 * Pricelevel2_From51to100)
-                    + (100 * Pricelevel3_From101to200)
-                    + (100 * Pricelevel4_From201to300)
-                    + (100 * Pricelevel5_From301to400)
-                    + (index - 400)
-                    * Pricelevel6_From401;
-            }
-            return total;
-        }
+        
+        
 
         private void tbCustomerID_TextChanged(object sender, EventArgs e)
         {
-            ////try {
-            ////    var input = tbCustomerID.Text;
-            ////    if(string.IsNullOrEmpty(input)) lblIDErrSms.Text = "Nho71 nha6p5 nha chan noi";
-            ////    if (!idRegex.IsMatch(input))
-            ////    {
-            ////        lblIDErrSms.Text = "Invalid ID";
-            ////        lblIDErrSms.ForeColor = Color.Red;
-            ////    }
+            #region trycatchErrors
+            //try {
+            //    var input = tbCustomerID.Text;
+            //    if(string.IsNullOrEmpty(input)) lblIDErrSms.Text = "Nho71 nha6p5 nha chan noi";
+            //    if (!idRegex.IsMatch(input))
+            //    {
+            //        lblIDErrSms.Text = "Invalid ID";
+            //        lblIDErrSms.ForeColor = Color.Red;
+            //    }
 
-            ////} 
-            ////catch (Exception ex)
-            ////{ }
+            //} 
+            //catch (Exception ex)
+            //{ }
+            #endregion
             for (int i = 0; i < tbCustomerID.Text.Length; i++)
             {
                 checkAlphabeticalwithIDValue("Invalid ID", lblIDErrSms, tbCustomerID);
@@ -205,23 +135,7 @@ namespace ElectricCalculator
                 this.lsvResult.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
             }
 
-            // Setup database
-            using (var context = new ElectricDBContext())
-            {
-                // create database if not exist
-                
-                context.Database.EnsureCreated();
-                //create entity objects
-                //var grd1 = new Customer() { Id = tbCustomerID.Text, Name = tbCustomerName.Text };
-                //var std1 = new CustomerIndies() { CustomerId = tbCustomerID.Text, CurrentIndex = txtBoxCurrentIndex.Text, LastIndex = txtboxLastIndex.Text, ConsumerIndex =lblFinalCost.Text };
-
-                //add entitiy to the context
-                //context.Customer.Add(grd1);
-                //context.CustomerIndicess.Add(std1);
-
-                //save data to the database tables
-                context.SaveChanges();
-            }
+            
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -244,16 +158,10 @@ namespace ElectricCalculator
             lblFinalCost.Text = $"{int.Parse(txtBoxCurrentIndex.Text) - int.Parse(txtboxLastIndex.Text)}";
         }
 
-        private bool ResetElectricFormError()
-        {
-            lblIDErrSms.Text = string.Empty;
-            lblNameErrSMS.Text = string.Empty;
-            lblLastIndexErrSMS.Text = string.Empty;
-            lblCurrentIndexErrSms.Text = string.Empty;
-            lblStatusSMS.Text = string.Empty;
-            return true;
-        }
+        
 
+
+        #region Other Unused functions
         private void btnReset_Click()
         {
             tbCustomerID.Text = string.Empty;
@@ -264,6 +172,98 @@ namespace ElectricCalculator
             ResetElectricFormError();
         }
 
+        private bool ResetElectricFormError()
+        {
+            lblIDErrSms.Text = string.Empty;
+            lblNameErrSMS.Text = string.Empty;
+            lblLastIndexErrSMS.Text = string.Empty;
+            lblCurrentIndexErrSms.Text = string.Empty;
+            lblStatusSMS.Text = string.Empty;
+            return true;
+        }
+
+
+
+        
+        private double CalculateElectricPrice_v3(int indexElectricity)
+        {
+            double price = 0;
+            const int arrayLength = 6;
+            int[] arrayIndex = new int[arrayLength] { 0, 51, 101, 201, 301, 401 };
+            int[] arrayPrice = new int[arrayLength] { 1806, 1866, 2167, 2729, 3050, 3151 };
+            for (int i = arrayLength - 1; i >= 0; i--)
+            {
+                int subIndex = indexElectricity - arrayIndex[i];
+
+                if (subIndex < 0)
+                {
+                    continue;
+                }
+                price += subIndex * arrayPrice[i];
+                indexElectricity = arrayIndex[i];
+            }
+            return price;
+        }
+
+
+
+        /// <summary>
+        /// Calculate the electric price based on the consumption index with if else strategy
+        /// </summary>
+        /// <param name="index">The consumer index that customer has used in the month</param>
+        /// <returns>Return the price in float numbers</returns>
+        private float calculateElectricPrice(float index)
+        {
+            float total = 0;
+            if (index <= 50)
+            {
+                total = index * Pricelevel1_From0to50;
+            }
+            else if (index >= 51 && index <= 100)           // 51 - 100
+            {
+                total = (50 * Pricelevel1_From0to50)
+                    + (index - 50)
+                    * Pricelevel2_From51to100;
+            }
+            else if (index >= 101 && index <= 200)          // 101 - 200
+            {
+                total = (50 * Pricelevel1_From0to50)
+                    + (50 * Pricelevel2_From51to100)
+                    + (index - 100)
+                    * Pricelevel3_From101to200;
+            }
+            else if (index >= 201 && index <= 300)          // 201 - 300
+            {
+                total = (50 * Pricelevel1_From0to50)
+                    + (50 * Pricelevel2_From51to100)
+                    + (100 * Pricelevel3_From101to200)
+                    + (index - 200)
+                    * Pricelevel4_From201to300;
+            }
+            else if (index >= 301 && index <= 400)          // 301 - 400
+            {
+                total = (50 * Pricelevel1_From0to50)
+                    + (50 * Pricelevel2_From51to100)
+                    + (100 * Pricelevel3_From101to200)
+                    + (100 * Pricelevel4_From201to300)
+                    + (index - 300)
+                    * Pricelevel5_From301to400;
+            }
+            else if (index >= 401)                      // 401 to infinite
+            {
+                total = (50 * Pricelevel1_From0to50)
+                    + (50 * Pricelevel2_From51to100)
+                    + (100 * Pricelevel3_From101to200)
+                    + (100 * Pricelevel4_From201to300)
+                    + (100 * Pricelevel5_From301to400)
+                    + (index - 400)
+                    * Pricelevel6_From401;
+            }
+            return total;
+        }
+        #endregion
+
+        #region Function checkNumbericalValue
         /// <summary>
         /// Check and return the error message if the input is not a number function
         /// </summary>
@@ -281,6 +281,9 @@ namespace ElectricCalculator
             }
 
         }
+        #endregion
+
+        #region Function checkAlphabeticalValue
         /// <summary>
         /// Check and return the error message if the input is not a alphabetical function
         /// </summary>
@@ -298,7 +301,9 @@ namespace ElectricCalculator
             }
 
         }
+        #endregion
 
+        #region Function checkAlphabeticalwithIDValue
         /// <summary>
         /// Check and return the error message if the input is not a alphabetical with ID function
         /// </summary>
@@ -316,5 +321,7 @@ namespace ElectricCalculator
             }
 
         }
+        #endregion
+
     }
 }
