@@ -18,3 +18,6 @@ Continue exploring and working with databases
 18/Jun:
 Working with ADO.NET framework in sqlado branch
 Refactor whole projects
+
+20/Jun:
+Push to git, continue working on another machine
